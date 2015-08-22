@@ -1,7 +1,7 @@
 <?php
 //ini_set('display_errors', 'On');
-include_once '../admin/API/Search.class.php';
 include_once '../admin/include/Connection.class.php';
+include_once '../admin/API/Search.class.php';
 $query = isset($_GET['q'])?$_GET['q']:"";
 //if(count_chars($query) < 3) {
 //    $query = "";

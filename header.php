@@ -1,12 +1,14 @@
 <?php 
-include_once '../admin/admin/include/Connection.class.php';
-include_once '../admin/admin/include/User.class.php';
+include_once '../admin/include/Connection.class.php';
+include_once '../admin/include/User.class.php';
 SESSION_START();
 $user = new User();
 ?>
 <!doctype html>
 <html>
 <head>
+<link href='http://fonts.googleapis.com/css?family=Josefin+Sans:400,100,100italic,300,300italic,600,600italic,700,400italic,700italic' rel='stylesheet' type='text/css'>
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width">
 <title>Burp Big</title>
@@ -69,8 +71,10 @@ $user = new User();
 		//$( '#cd-dropdown' ).dropdown();
                 function add_cookie(){
                     $.cookie('city_id', $( "input[name='cd-dropdown']" ).val());
-                    $.cookie('city_name', $('span > .plc_icon').text());
-                    $(".text1").text($('span > .plc_icon').text());                		
+                    if($('span > .plc_icon').text() != "" && $('span > .plc_icon').text() != null) {
+                        $.cookie('city_name', $('span > .plc_icon').text());
+                        $(".text1").text($('span > .plc_icon').text());
+                    }
                     setTrendingData($( "input[name='cd-dropdown']" ).val());
                     
                 }
@@ -93,6 +97,7 @@ $user = new User();
 		        		$('.cd-dropdown ul li').css('top', '0px');
 		        	}
                                 add_cookie();
+                                $.cookie('city_name','Chandigarh');
                             $('.cd-dropdown').on('click', function(){
 		        		if(!$('.cd-active')[0]) {   
 						add_cookie();
@@ -104,9 +109,10 @@ $user = new User();
                     console.log(response);
                 }
          });
-        
+        //console.log($.cookie('city_id'));        
         if (!($.cookie('city_id') == null || $.cookie('city_id') == '')) {
-			$(".text1").text($.cookie('city_name'));                		
+            //console.log("City name: "+$.cookie('city_name'));
+            $(".text1").text($.cookie('city_name'));
             setTrendingData($.cookie('city_id'));
         }else{
         	 $(".text1").text('chandigarh');
@@ -165,24 +171,30 @@ $user = new User();
                             minChars: 0,
                             source: function(term, suggest){
                                 $.getJSON('search_json.php', { q: term }, function(choices){ 
+                                    //console.log(choices);
                                     var suggestions = [];
                                     for (i=0;i<choices.length;i++)
                                         if (~(choices[i][0]+' '+choices[i][1]).toLowerCase().indexOf(term)) suggestions.push(choices[i]);
                                     suggest(suggestions);                                
                                 });
                             },
-                            renderItem: function (item, search){                            
+                            renderItem: function (item, search){
+                            //console.log(item);
                                 var re = new RegExp("(" + search.split(' ').join('|') + ")", "gi");
+                                var ret;
                                 if(item[1] == "") {
                                     class_name = "";
+                                    ret = '<div style="cursor: pointer" class="autocomplete-suggestion" data-langname="'+item[0]+'" data-lang="'+item[1]+'" data-val="'+search+'"> '+item[0].replace(re, "<b>$1</b>")+' <span class="'+class_name+'">'+item[1]+'</span><span></span></div>';
                                 } else {
+                                    ret = '<div style="cursor: pointer" class="autocomplete-suggestion" data-langname="'+item[0]+'" data-lang="'+item[1]+'" data-val="'+search+'"> '+item[0].replace(re, "<b>$1</b>")+' <span class="'+class_name+'">'+item[1]+'</span></div>';
                                     class_name = "search_cat";
                                 }
-                                return '<div class="autocomplete-suggestion" data-langname="'+item[0]+'" data-lang="'+item[1]+'" data-val="'+search+'"> '+item[0].replace(re, "<b>$1</b>")+' <span class="'+class_name+'">'+item[1]+'</span></div>';
+                                return ret;
                             },
                             onSelect: function(e, term, item){
                                 //alert('Item "'+item.data('langname')+' ('+item.data('lang')+')" selected by '+(e.type == 'keydown' ? 'pressing enter' : 'mouse click')+'.');
                                 $('#ms-emails').val(item.data('langname'));
+                                location.href = 'reslist.php?s='+item.data('langname');
                             }
                     });
 
@@ -195,7 +207,7 @@ $user = new User();
                 dataType: 'JSON',
                 data: {type: 'trending_ads', city_id: cityId},
                 success: function (response) {
-                	console.log(response);
+                	//console.log(response);
                 	if (response.log)
                 		$("#trending_div").html('');
                     for(i=0; i< response.ads.length; i++){

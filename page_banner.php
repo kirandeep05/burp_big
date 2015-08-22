@@ -7,7 +7,7 @@
                 if(srch==""){
                      return;
                 } else {
-                    window.location.href="reslist.php?"+srch;
+                    window.location.href="reslist.php?s="+srch;
                 }
             }
             $(".serch_text").click(function(){

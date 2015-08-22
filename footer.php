@@ -4,9 +4,27 @@
 <section>
 	<div class="wrapper">
     	<div class="footxt">
-        	<span>Any question? Contact us: contact@burpbig.com	| 321-654-7856<br/>&copy; 2015 BURPBIG All rights reserved.</span>
+            <div class="col-6 fleft fltxt">
+                <span class="foolink">
+                    <a href="#">Terms and condition</a>
+                    <a href="#">Privacy policy</a>
+                    <a href="#">Careers</a>
+                    <a href="#">Blogs</a>
+                </span>
+            </div>
+            
+            <div class="col-6 fright frtxt">
+                <span>
+                <b>Any question?</b> <img src="img/mail.png" alt="Mail me" title="Mail me on"/> contact@burpbig.com	  <img src="img/call.png"/>  <a href="tel:3216547856">321-654-7856</a>
+                </span>
+            </div>
+            
+            <div class="clr"></div>
         </div>
-    </div>
+        
+        <div class="cpr fleft">&copy; 2015 BURPBIG MEDIA All rights reserved.</div>
+        
+        </div>
 </section>
 </footer>
 </body>
